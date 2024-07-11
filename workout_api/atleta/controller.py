@@ -84,7 +84,7 @@ async def query(db_session: DatabaseDependency) -> list[AtletaOut]:
 )
 async def get(id: UUID4, nome, cpf, db_session: DatabaseDependency) -> AtletaOut:
     atleta: AtletaOut = (
-        await db_session.execute(select(AtletaModel).filter_by(id=id,nome=nome,cpf=cpf))
+        await db_session.execute(select(AtletaModel).filter_by(id=id,nome=nome,cpf=cpf)) 
     ).scalars().first()
 
     if not atleta:
