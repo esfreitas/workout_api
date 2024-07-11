@@ -5,6 +5,7 @@ from pydantic import UUID4
 
 from workout_api.atleta.schemas import AtletaIn, AtletaOut, AtletaUpdate
 from workout_api.atleta.models import AtletaModel
+from workout_api.atleta.models import AtletaModel_customizado
 from workout_api.categorias.models import CategoriaModel
 from workout_api.centro_treinamento.models import CentroTreinamentoModel
 
@@ -70,7 +71,7 @@ async def post(
     response_model=list[AtletaOut],
 )
 async def query(db_session: DatabaseDependency) -> list[AtletaOut]:
-    atletas: list[AtletaOut] = (await db_session.execute(select(AtletaModel))).scalars().all()
+    atletas: list[AtletaOut] = (await db_session.execute(select(AtletaModel_customizado))).scalars().all()
     
     return [AtletaOut.model_validate(atleta) for atleta in atletas]
 
@@ -81,9 +82,9 @@ async def query(db_session: DatabaseDependency) -> list[AtletaOut]:
     status_code=status.HTTP_200_OK,
     response_model=AtletaOut,
 )
-async def get(id: UUID4, db_session: DatabaseDependency) -> AtletaOut:
+async def get(id: UUID4, nome, cpf, db_session: DatabaseDependency) -> AtletaOut:
     atleta: AtletaOut = (
-        await db_session.execute(select(AtletaModel).filter_by(id=id))
+        await db_session.execute(select(AtletaModel).filter_by(id=id,nome=nome,cpf=cpf))
     ).scalars().first()
 
     if not atleta:
