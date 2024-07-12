@@ -22,7 +22,11 @@ class AtletaIn(Atleta):
 
 
 class AtletaOut(Atleta, OutMixin):
-    pass
+    id: UUID4
+    created_at: datetime
+    nome: str
+    centro_treinamento: CentroTreinamentoOut
+    categoria: CategoriaOut
 
 class AtletaUpdate(BaseSchema):
     nome: Annotated[Optional[str], Field(None, description='Nome do atleta', example='Joao', max_length=50)]
